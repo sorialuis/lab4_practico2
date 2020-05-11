@@ -9,12 +9,34 @@ version: "2"
 services:
   app:
     build: ./app
-    links:
+    environment: 
+      NAME_HELLO: Luis en la primera aplicacion
+    depends_on: 
       - db
     ports:
       - 8830:5000 #8830 - localhost del host, 5000 del container
 
 
+  app2:
+    build: ./app
+    environment: 
+      NAME_HELLO: Luis en la segunda aplicacion
+    depends_on: 
+      - db
+    ports:
+      - 8829:5000 
+
+  phpMyAdm:
+    image: phpmyadmin/phpmyadmin:5.0.2
+    environment: 
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: username
+      MYSQL_PASSWORD: password
+    depends_on: 
+      - db
+    ports:
+      - 8831:80
+    
   db:
     image: mysql:5.7
     environment:
@@ -22,6 +44,7 @@ services:
       MYSQL_USER: username
       MYSQL_PASSWORD: password
     volumes:
+      - ./../db:/var/lib/mysql
       - ./db:/docker-entrypoint-initdb.d/:ro
 
 
