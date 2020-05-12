@@ -10,7 +10,9 @@ services:
   app:
     build: ./app
     environment: 
-      NAME_HELLO: Luis en la primera aplicacion
+      NAME_HELLO: ${name_hello}
+      DB_USER_NAME: root
+      DB_PASSWORD: ${mysql_root_password}
     depends_on: 
       - db
     ports:
@@ -20,7 +22,7 @@ services:
   app2:
     build: ./app
     environment: 
-      NAME_HELLO: Luis en la segunda aplicacion
+      NAME_HELLO: ${name_hello2}
     depends_on: 
       - db
     ports:
@@ -29,9 +31,9 @@ services:
   phpMyAdm:
     image: phpmyadmin/phpmyadmin:5.0.2
     environment: 
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: username
-      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: ${mysql_root_password}
+      MYSQL_USER: ${mysql_user}
+      MYSQL_PASSWORD: ${mysql_password}
     depends_on: 
       - db
     ports:
@@ -40,9 +42,9 @@ services:
   db:
     image: mysql:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: username
-      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: ${mysql_root_password}
+      MYSQL_USER: ${mysql_user}
+      MYSQL_PASSWORD: ${mysql_password}
     volumes:
       - ./../db:/var/lib/mysql
       - ./db:/docker-entrypoint-initdb.d/:ro
